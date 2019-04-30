@@ -45,9 +45,9 @@ angular.module('VMCModule').controller('PlayerListCtrl',
 			var config = null;
 			// try to get studio config from VMC (should work if we are in VMC)
 			try {
-				var kmc = window.parent.kmc;
-				if (kmc && kmc.vars && kmc.vars.studio.config) {
-					config = kmc.vars.studio.config;
+				var vmc = window.parent.vmc;
+				if (vmc && vmc.vars && vmc.vars.studio.config) {
+					config = vmc.vars.studio.config;
 					$scope.UIConf = angular.fromJson(config);
 				}
 			} catch (e) {
@@ -79,7 +79,7 @@ angular.module('VMCModule').controller('PlayerListCtrl',
 
 			// get players list from VMC
 			var playersRequest = {
-				'filter:tagsMultiLikeOr': 'kdp3,html5studio',
+				'filter:tagsMultiLikeOr': 'vdp3,html5studio',
 				'filter:orderBy': '-updatedAt',
 				'filter:objTypeIn': '1,8',
 				'filter:objectType': 'VidiunUiConfFilter',
@@ -297,7 +297,7 @@ angular.module('VMCModule').controller('PlayerListCtrl',
 				var currentVersion = window.MWEMBED_VERSION;
 				var msg = 'This will update the player "' + player.name + '" (ID: ' + player.id + ').';
 				msg += '<br>Current player version: ' + html5libVersion;
-				msg += '<br>Update to version: ' + currentVersion + '<a href="https://github.com/kaltura/mwEmbed/releases/tag/v' + currentVersion + '" target="_blank"> (release notes)</a>';
+				msg += '<br>Update to version: ' + currentVersion + '<a href="https://github.com/vidiun/mwEmbed/releases/tag/v' + currentVersion + '" target="_blank"> (release notes)</a>';
 				var modal = utilsSvc.confirm('Updating confirmation', msg, 'Update');
 				modal.result.then(function (result) {
 					if (result) {
@@ -308,7 +308,7 @@ angular.module('VMCModule').controller('PlayerListCtrl',
 							upgradeProccess.resolve('update finished successfully');
 							utilsSvc.alert('Player Updated', 'The player was updated successfully.');
 							if ($("#kcms", window.parent.document).length > 0) {
-								$("#kcms", window.parent.document)[0].refreshPlayersList(); // trigger players list refresh on KMC
+								$("#kcms", window.parent.document)[0].refreshPlayersList(); // trigger players list refresh on VMC
 							}
 						}, function (reason) {
 							utilsSvc.alert('Update player failure', reason);
@@ -342,7 +342,7 @@ angular.module('VMCModule').controller('PlayerListCtrl',
 							player.tags = isPlaylist ? 'html5studio,playlist' : 'html5studio,player';
 							upgradeProccess.resolve('upgrade finished successfully');
 							if ($("#kcms", window.parent.document).length > 0) {
-								$("#kcms", window.parent.document)[0].refreshPlayersList(); // trigger players list refresh on KMC
+								$("#kcms", window.parent.document)[0].refreshPlayersList(); // trigger players list refresh on VMC
 							}
 						}, function (reason) {
 							utilsSvc.alert('Update player failure', reason);

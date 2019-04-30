@@ -25,7 +25,7 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 			$scope.refreshPlayer();
 		},0);
 	};
-	if (window.parent.kmc && window.parent.kmc.vars.studio.showFlashStudio === false){
+	if (window.parent.vmc && window.parent.vmc.vars.studio.showFlashStudio === false){
 		$(".menuFooter").css("bottom","1px");
 	}
 	window.parent.studioDataChanged = false; // used when navigating away from studio
@@ -78,8 +78,8 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 
 	$scope.setPlaylistEntry = function(id, label){
 		if ($scope.entriesTypeSelector === 'Playlist' && $scope.playerData.config.plugins.playlistAPI && $scope.playerData.config.plugins.playlistAPI.plugin){
-			$scope.playerData.config.plugins.playlistAPI.kpl0Id = id;
-			$scope.playerData.config.plugins.playlistAPI.kpl0Name = label;
+			$scope.playerData.config.plugins.playlistAPI.vpl0Id = id;
+			$scope.playerData.config.plugins.playlistAPI.vpl0Name = label;
 			$scope.$broadcast('setPlaylistEvent', [id, label]);
 		}
 	};
@@ -397,8 +397,8 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 		$scope.updatePlayerData(); // update the player data from the menu data
 		$scope.$broadcast('beforeRenderEvent'); // allow other controllers to update the player data if needed
 		$(".onpagePlaylistInterface").remove(); // remove any playlist onpage containers that might exists from previous rendering
-		$("#kVideoTarget").width($scope.playerData.width);
-		$("#kVideoTarget").height($scope.playerData.height);
+		$("#vVideoTarget").width($scope.playerData.width);
+		$("#vVideoTarget").height($scope.playerData.height);
 
 		for (var plug in $scope.playerData.config.plugins)
 			if ($scope.playerData.config.plugins[plug]['enabled'] === true)
@@ -468,8 +468,8 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 					}
 				}
 				if (!found) {
-					playlistMenuArr.push({"model": "config.plugins.playlistAPI.kpl" + playlistIndex + "Id", "type": "hiddenValue"});
-					playlistMenuArr.push({"model": "config.plugins.playlistAPI.kpl" + playlistIndex + "Name", "type": "hiddenValue"});
+					playlistMenuArr.push({"model": "config.plugins.playlistAPI.vpl" + playlistIndex + "Id", "type": "hiddenValue"});
+					playlistMenuArr.push({"model": "config.plugins.playlistAPI.vpl" + playlistIndex + "Name", "type": "hiddenValue"});
 				}
 				playlistIndex++;
 			}
