@@ -4,7 +4,7 @@
 
 describe('SortService', function() {
     var sortSvc;
-    beforeEach(module('KMC.services'));
+    beforeEach(module('VMC.services'));
     beforeEach(inject(function($injector) {
         sortSvc = $injector.get('sortSvc');
     }));

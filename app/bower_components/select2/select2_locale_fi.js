@@ -16,7 +16,7 @@
             return "Ole hyvä ja anna " + n + " merkkiä vähemmän";
         },
         formatSelectionTooBig: function (limit) {
-            return "Voit valita ainoastaan " + limit + " kpl";
+            return "Voit valita ainoastaan " + limit + " vpl";
         },
         formatLoadMore: function (pageNumber) {
             return "Ladataan lisää tuloksia...";

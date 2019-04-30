@@ -3,11 +3,11 @@ var cl = function (val) {
     return console.log(val);
 };
 // Declare app level module which depends on filters, and services
-var KMCModule = angular.module('KMCModule',
-    ['pascalprecht.translate', 'ngRoute', 'KMC.controllers', 'KMC.filters',
-        'KMC.services', 'KMC.directives', 'ngAnimate', 'LocalStorageModule', 'KMCmenu', 'JSONedit']);
+var VMCModule = angular.module('VMCModule',
+    ['pascalprecht.translate', 'ngRoute', 'VMC.controllers', 'VMC.filters',
+        'VMC.services', 'VMC.directives', 'ngAnimate', 'LocalStorageModule', 'VMCmenu', 'JSONedit']);
 
-KMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tooltipProvider', '$translateProvider', function ($routeProvider, $locationProvider, $httpProvider, $tooltipProvider, $translateProvider) {
+VMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tooltipProvider', '$translateProvider', function ($routeProvider, $locationProvider, $httpProvider, $tooltipProvider, $translateProvider) {
         $translateProvider.useStaticFilesLoader({
             prefix: 'i18n/',
             suffix: '.json'
@@ -75,7 +75,7 @@ KMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tool
                 templateUrl: 'view/login.html',
                 controller: 'LoginCtrl',
                 resolve: {'apiService': ['api', 'apiService', function (api, apiService) {
-                    // make sure apiService is available upon invalid KS redirect
+                    // make sure apiService is available upon invalid VS redirect
                     return apiService;
                 }]
                 }
@@ -86,33 +86,33 @@ KMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tool
                 controller: 'PlayerListCtrl',
                 resolve: {
                     'apiService': ['api', 'apiService', 'localStorageService', '$location', function (api, apiService, localStorageService, $location) {
-                        // make sure we load the list only if we have valid KS
-                        return ksCheck(api, apiService, localStorageService, $location).then(function () {
+                        // make sure we load the list only if we have valid VS
+                        return vsCheck(api, apiService, localStorageService, $location).then(function () {
                             return apiService;
                         });
                     }]
                 }
             }
         );
-        var ksCheck = function (api, apiService, localStorageService, $location) {
-            // Check if we have ks in locaclstorage
+        var vsCheck = function (api, apiService, localStorageService, $location) {
+            // Check if we have vs in locaclstorage
             try {
-                var kmc = window.parent.kmc;
-                if (kmc && kmc.vars) {
-                    // got ks from KMC - save to local storage
-                    if (kmc.vars.ks)
-                        localStorageService.add('ks', kmc.vars.ks);
+                var vmc = window.parent.vmc;
+                if (vmc && vmc.vars) {
+                    // got vs from VMC - save to local storage
+                    if (vmc.vars.vs)
+                        localStorageService.add('vs', vmc.vars.vs);
                 }
             } catch (e) {
-                cl('Could not located parent.kmc: ' + e);
+                cl('Could not located parent.vmc: ' + e);
             }
-            var ks = localStorageService.get('ks');
-            if (!ks) { //navigate to login
+            var vs = localStorageService.get('vs');
+            if (!vs) { //navigate to login
                 $location.path("/login");
                 return false;
             } else {
                 api.then(function () {
-                    apiService.setKs(ks);
+                    apiService.setVs(vs);
                 });
             }
             return api; // changed to return the promise of the API
@@ -125,7 +125,7 @@ KMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tool
                 reloadOnSearch: false,
                 resolve: {
                     'PlayerData': ['PlayerService', '$route', 'api', 'apiService', 'localStorageService', '$location', function (PlayerService, $route, api, apiService, localStorageService, $location) {
-                        var apiLoaded = ksCheck(api, apiService, localStorageService, $location);
+                        var apiLoaded = vsCheck(api, apiService, localStorageService, $location);
                         if (apiLoaded) {
                             return apiLoaded.then(function (api) {
                                 return PlayerService.getPlayer($route.current.params.id);
@@ -147,7 +147,7 @@ KMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tool
                         return  playerTemplates.listSystem();
                     }],
                     'userId': function () {
-                        return '1'; //  KMC would need to give us the userID ?
+                        return '1'; //  VMC would need to give us the userID ?
                     }
 
                 }
@@ -159,7 +159,7 @@ KMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tool
                 reloadOnSearch: false,
                 resolve: {
                     'api': ['api', 'apiService', 'localStorageService', '$location', function (api, apiService, localStorageService, $location) {
-                        return ksCheck(api, apiService, localStorageService, $location);
+                        return vsCheck(api, apiService, localStorageService, $location);
                     }],
                     'PlayerData': ['api', 'PlayerService', function (api, PlayerService) {
                         return api.then(function () {
@@ -174,14 +174,14 @@ KMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tool
                 if (localStorageService.isSupported()) {
                     localStorageService.clearAll();
                 }
-                apiService.unSetks();
+                apiService.unSetvs();
                 $location.path('/login');
             }]}
 
         });
         $routeProvider.otherwise({
             resolve: {'res': ['api', 'apiService', 'localStorageService', '$location', function (api, apiService, localStorageService, $location) {
-                if (ksCheck(api, apiService, localStorageService, $location)) {
+                if (vsCheck(api, apiService, localStorageService, $location)) {
                     return $location.path('/list');
                 }
             }]}
@@ -195,8 +195,8 @@ KMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tool
     },1000);
 
 
-    if (typeof window.parent.kmc != 'undefined') {
-        $('html').addClass('inKmc');
+    if (typeof window.parent.vmc != 'undefined') {
+        $('html').addClass('inVmc');
     }
 
     // set the logTime function used in debug mode

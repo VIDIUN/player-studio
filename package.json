@@ -1,6 +1,6 @@
 {
   "name": "Studio-v2",
-  "description": "KMC Video Studio V2",
+  "description": "VMC Video Studio V2",
   "version": "2.0.0",
   "main": "Gruntfile.js",
   "devDependencies": {
@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kaltura/player-studio.git"
+    "url": "https://github.com/vidiun/player-studio.git"
   },
   "author": "Amir Chervinsky",
   "license": "GNU",

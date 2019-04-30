@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('KMCModule').controller('PlayerListCtrl',
+angular.module('VMCModule').controller('PlayerListCtrl',
 	['apiService', 'loadINI', '$location', '$rootScope', '$scope', '$filter', '$modal', '$timeout', '$log', "$compile", "$window", 'localStorageService', 'requestNotificationChannel', 'PlayerService', '$q', 'utilsSvc',
 		function (apiService, loadINI, $location, $rootScope, $scope, $filter, $modal, $timeout, $log, $compile, $window, localStorageService, requestNotificationChannel, PlayerService, $q, utilsSvc) {
 			window.KalturaPlayer = null;
@@ -46,7 +46,7 @@ angular.module('KMCModule').controller('PlayerListCtrl',
 
 			// get studio UICONF to setup studio configuration
 			var config = null;
-			// try to get studio config from KMC (should work if we are in KMC)
+			// try to get studio config from VMC (should work if we are in VMC)
 			try {
 				var kmc = window.parent.kmc;
 				if (kmc && kmc.vars && kmc.vars.studioV3.config) {
@@ -55,18 +55,18 @@ angular.module('KMCModule').controller('PlayerListCtrl',
 				}
 			} catch (e) {
 				// standalone version
-				$log.error('Could not located parent.kmc: ' + e);
+				$log.error('Could not located parent.vmc: ' + e);
 			}
 
-			// if we didn't get the uiconf from kmc.vars - load the configuration from base.ini
+			// if we didn't get the uiconf from vmc.vars - load the configuration from base.ini
 			if (!config) {
 				loadINI.getINIConfig().success(function (data) {
 					$scope.UIConf = data;
 				});
 			}
 
-			// get KDP default XML
-			PlayerService.getKDPConfig();
+			// get VDP default XML
+			PlayerService.getVDPConfig();
 
 			// delete temp players if exists in cache (players that were created but not saved)
 			if (localStorageService.get('tempPlayerID')) {
@@ -80,18 +80,18 @@ angular.module('KMCModule').controller('PlayerListCtrl',
 				});
 			}
 
-			// get players list from KMC
+			// get players list from VMC
 			var playersRequest = {
 				'filter:tagsMultiLikeAnd': 'kalturaPlayerJs',
 				'filter:orderBy': '-updatedAt',
 				'filter:objTypeIn': '1,8',
-				'filter:objectType': 'KalturaUiConfFilter',
+				'filter:objectType': 'VidiunUiConfFilter',
 				'filter:creationModeEqual': '2',
 				'ignoreNull': '1',
-				'responseProfile:objectType': 'KalturaDetachedResponseProfile',
+				'responseProfile:objectType': 'VidiunDetachedResponseProfile',
 				'responseProfile:type': '1',
 				'responseProfile:fields': 'id,name,html5Url,createdAt,updatedAt,tags',
-				'page:objectType': 'KalturaFilterPager',
+				'page:objectType': 'VidiunFilterPager',
 				'pager:pageIndex': '1',
 				'pager:pageSize': '999',
 				'service': 'uiConf',

@@ -2,7 +2,7 @@
 //
 ///* Filters */
 //
-angular.module('KMC.filters', ['ngSanitize' ])
+angular.module('VMC.filters', ['ngSanitize' ])
     .filter('HTMLunsafe',function($sce) {
         return function(val) {
             return $sce.trustAsHtml(val);
