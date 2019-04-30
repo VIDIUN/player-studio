@@ -1,5 +1,5 @@
 'use strict';
-var DirectivesModule = angular.module('KMC.directives', [
+var DirectivesModule = angular.module('VMC.directives', [
     'ui.bootstrap',
     'ui.select2',
     'ui.sortable'

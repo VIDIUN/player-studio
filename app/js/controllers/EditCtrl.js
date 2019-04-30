@@ -1,6 +1,6 @@
-var KMCMenu = angular.module('KMCmenu', ['ui.bootstrap', 'ngSanitize', 'ui.select2', 'angularSpectrumColorpicker']);
+var VMCMenu = angular.module('VMCmenu', ['ui.bootstrap', 'ngSanitize', 'ui.select2', 'angularSpectrumColorpicker']);
 
-KMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','PlayerService', 'apiService', 'editableProperties', 'localStorageService','$routeParams','$modal', '$location','requestNotificationChannel', 'select2Svc', 'utilsSvc',
+VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','PlayerService', 'apiService', 'editableProperties', 'localStorageService','$routeParams','$modal', '$location','requestNotificationChannel', 'select2Svc', 'utilsSvc',
 	function ($scope, $http, $timeout, PlayerData, PlayerService, apiService, editableProperties, localStorageService, $routeParams, $modal, $location, requestNotificationChannel, select2Svc, utilsSvc) {
 
 	$scope.playerData = angular.copy(PlayerData);   // get the player data
@@ -321,11 +321,11 @@ KMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 		    $scope.refreshPlayer();
 		    return;
 	    }
-	    if (property['player-refresh'] && property['player-refresh'].indexOf(".") != -1) { // handle setKDPAttribute values
+	    if (property['player-refresh'] && property['player-refresh'].indexOf(".") != -1) { // handle setVDPAttribute values
 		    var obj = property['player-refresh'].split(".")[0];
 		    var prop = property['player-refresh'].split(".")[1];
-		    var kdp = document.getElementById('kVideoTarget');
-		    kdp.setKDPAttribute(obj, prop, property.initvalue);
+		    var vdp = document.getElementById('vVideoTarget');
+		    vdp.setVDPAttribute(obj, prop, property.initvalue);
 		    return;
 	    }
 	    if (property.model === "autoUpdate"){ // handle auto-update checkbox
@@ -415,8 +415,8 @@ KMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 		}
 		delete $scope.playerData.config.enviornmentConfig;
 		angular.extend(flashvars,{'jsonConfig': angular.toJson($scope.playerData.config)}); // update the player with the new configuration
-		if (window.parent.kmc && window.parent.kmc.vars.ks){
-			angular.extend(flashvars, {'ks': window.parent.kmc.vars.ks}); // add ks if available
+		if (window.parent.vmc && window.parent.vmc.vars.vs){
+			angular.extend(flashvars, {'vs': window.parent.vmc.vars.vs}); // add vs if available
 		}
 		if ($scope.isIE8) {                      // for IE8 add transparent mode
 			angular.extend(flashvars, {'wmode': 'transparent'});
@@ -459,11 +459,11 @@ KMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 			var playlistData = $scope.playerData.config.plugins.playlistAPI;
 			var playlistMenuArr = data.lookAndFeel.children.playlistAPI.children;
 			var playlistIndex = 1;
-			while (playlistData["kpl" + playlistIndex + "Id"]) {
+			while (playlistData["vpl" + playlistIndex + "Id"]) {
 				// check if we need to add this to the menu
 				var found = false;
 				for (var j = 0; j < playlistMenuArr.length; j++) {
-					if (playlistMenuArr[j].model.indexOf("kpl" + playlistIndex + "Id") !== -1) {
+					if (playlistMenuArr[j].model.indexOf("vpl" + playlistIndex + "Id") !== -1) {
 						found = true;
 					}
 				}
