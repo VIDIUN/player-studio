@@ -1,4 +1,4 @@
-# Kaltura Player Studio - HTML5 Angular version.
+# Vidiun Player Studio - HTML5 Angular version.
 
 This repo was seeded by angular seed, run applicaiton by buliding with :
 
@@ -23,7 +23,7 @@ and e2e
 # License and Copyright Information
 All code in this project is released under the [AGPLv3 license](http://www.gnu.org/licenses/agpl-3.0.html) unless a different license for a particular library is specified in the applicable library path. 
 
-Copyright © Kaltura Inc. All rights reserved.
+Copyright © Vidiun Inc. All rights reserved.
 
 Authors [@nadavsinai](https://github.com/nadavsinai), [@itaykinnrot](https://github.com/itaykinnrot), [@AmirChervinsky](https://github.com/amirch1), [@MichalRadwantzor](https://github.com/MichalRadwantzor) and many others.
 

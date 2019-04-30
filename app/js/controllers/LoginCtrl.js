@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('KMCModule').controller('LoginCtrl',
+angular.module('VMCModule').controller('LoginCtrl',
     ['$scope', 'apiService', '$location', 'localStorageService', 'requestNotificationChannel','$filter',
         function($scope, apiService, $location, localStorageService, requestNotificationChannel,$filter) {
             requestNotificationChannel.requestEnded('list'); // if coming from list this would stop the spinner
@@ -19,9 +19,9 @@ angular.module('KMCModule').controller('LoginCtrl',
                 }).then(function(data) {
                         // To add to local storage
                         if (localStorageService.isSupported()) {
-                            localStorageService.add('ks', data);
+                            localStorageService.add('vs', data);
                         }
-                        apiService.setKs(data);
+                        apiService.setVs(data);
                         $location.path("/list");
                     }, function(errorMsg) {
                         $scope.formError = true;

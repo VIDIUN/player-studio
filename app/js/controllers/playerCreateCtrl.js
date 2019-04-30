@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('KMCModule').controller('PlayerCreateCtrl',
+angular.module('VMCModule').controller('PlayerCreateCtrl',
     ['$scope', '$filter', 'templates', 'userId', 'playerTemplates',
         function($scope, $filter, templates, userId, playerTemplates) {
             $scope.title = $filter('translate')('New player - from template');

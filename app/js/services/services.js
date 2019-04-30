@@ -1,19 +1,19 @@
 'use strict';
 /* Services */
-var KMCServices = angular.module('KMC.services', []);
+var VMCServices = angular.module('VMC.services', []);
 
-KMCServices.config(['$httpProvider', function ($httpProvider) {
+VMCServices.config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
 
-KMCServices.factory('apiCache', ['$cacheFactory', function ($cacheFactory) {
+VMCServices.factory('apiCache', ['$cacheFactory', function ($cacheFactory) {
 	return $cacheFactory('apiCache', {
 		capacity: 10
 	});
 }]);
 
-KMCServices.factory('select2Svc', ['$timeout', function ($timeout) {
+VMCServices.factory('select2Svc', ['$timeout', function ($timeout) {
 	var select2Svc = {
 		'getConfig': function (entries, searchFunc) {
 			var confObj = {
@@ -51,7 +51,7 @@ KMCServices.factory('select2Svc', ['$timeout', function ($timeout) {
 	return select2Svc;
 }]);
 
-KMCServices.factory('utilsSvc', ['$modal', function ($modal) {
+VMCServices.factory('utilsSvc', ['$modal', function ($modal) {
 	var utilsSvc = {
 		'str2val': function (str) {
 			if (typeof str !== "string")
@@ -133,7 +133,7 @@ KMCServices.factory('utilsSvc', ['$modal', function ($modal) {
 	return utilsSvc;
 }]);
 
-KMCServices.factory('sortSvc', [function () {
+VMCServices.factory('sortSvc', [function () {
 		var containers = {};
 		var sorter = {};
 
@@ -184,16 +184,16 @@ KMCServices.factory('sortSvc', [function () {
 	}]
 );
 
-KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiService', '$filter', 'localStorageService', '$location', 'utilsSvc',
+VMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiService', '$filter', 'localStorageService', '$location', 'utilsSvc',
 	function ($http, $modal, $log, $q, apiService, $filter, localStorageService, $location, utilsSvc) {
 		var playersCache = {};
 		var currentPlayer = {};
 		var previewEntry;
 		var previewEntryObj;
-		var playerId = 'kVideoTarget';
+		var playerId = 'vVideoTarget';
 		var currentRefresh = null;
 		var nextRefresh = false;
-		var kdpConfig = '';
+		var vdpConfig = '';
 		var defaultCallback = function () {
 			playersService.refreshNeeded = false;
 			currentRefresh.resolve(true);
@@ -250,24 +250,24 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				$("#Comp_300x250").empty();
 				$("#Comp_728x90").empty();
 				window.mw.setConfig('forceMobileHTML5', true);
-				window.mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
-				kWidget.embed({
-					"targetId": 'kVideoTarget',
+				window.mw.setConfig('Vidiun.EnableEmbedUiConfJs', true);
+				vWidget.embed({
+					"targetId": 'vVideoTarget',
 					"wid": "_" + wid,
 					"uiconf_id": uiconf_id,
 					"flashvars": flashvars,
 					"entry_id": entry_id,
 					"readyCallback": function () {
-						$("#kVideoTarget_ifp").contents().find('link[href$="playList.css"]').clone().appendTo($('head')); // inject playlist css from iframe to parent
+						$("#vVideoTarget_ifp").contents().find('link[href$="playList.css"]').clone().appendTo($('head')); // inject playlist css from iframe to parent
 					}
 				});
 			},
-			'setKDPAttribute': function (attrStr, value) {
-				var kdp = document.getElementById('kVideoTarget');
-				if ($.isFunction(kdp.setKDPAttribute) && typeof attrStr != "undefined" && attrStr.indexOf(".") != -1) {
+			'setVDPAttribute': function (attrStr, value) {
+				var vdp = document.getElementById('vVideoTarget');
+				if ($.isFunction(vdp.setVDPAttribute) && typeof attrStr != "undefined" && attrStr.indexOf(".") != -1) {
 					var obj = attrStr.split(".")[0];
 					var property = attrStr.split(".")[1];
-					kdp.setKDPAttribute(obj, property, value);
+					vdp.setVDPAttribute(obj, property, value);
 				}
 			},
 			playerRefresh: playerRefresh,
@@ -275,19 +275,19 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				var deferred = $q.defer();
 				playersService.getDefaultConfig().success(function (data, status, headers, config) {
 					var request;
-					// under KMC - clone the default KMC player and update it
-					if (window.parent && window.parent.kmc && window.parent.kmc.vars && window.parent.kmc.vars.default_kdp) {
+					// under VMC - clone the default VMC player and update it
+					if (window.parent && window.parent.vmc && window.parent.vmc.vars && window.parent.vmc.vars.default_vdp) {
 						request = {
 							service: 'multirequest',
 							'action': null,
 							'1:service': 'uiconf',
 							'1:action': 'clone',
-							'1:id': window.parent.kmc.vars.default_kdp.id,
+							'1:id': window.parent.vmc.vars.default_vdp.id,
 							'2:service': 'uiconf',
 							'2:action': 'update',
 							'2:id': '{1:result:id}',
 							'2:uiConf:name': 'New Player',
-							'2:uiConf:objectType': 'KalturaUiConf',
+							'2:uiConf:objectType': 'VidiunUiConf',
 							'2:uiConf:objType': 1,
 							'2:uiConf:width': 560,
 							'2:uiConf:height': 395,
@@ -300,25 +300,25 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 						request = {
 							'service': 'uiConf',
 							'action': 'add',
-							'uiConf:objectType': 'KalturaUiConf',
+							'uiConf:objectType': 'VidiunUiConf',
 							'uiConf:objType': 1,
 							'uiConf:description': '',
 							'uiConf:height': '395',
 							'uiConf:width': '560',
-							'uiConf:swfUrl': '/flash/kdp3/v3.9.8/kdp3.swf',
+							'uiConf:swfUrl': '/flash/vdp3/v3.9.8/vdp3.swf',
 							'uiConf:fUrlVersion': '3.9.8',
 							'uiConf:version': '161',
 							'uiConf:name': 'New Player',
 							'uiConf:tags': 'html5studio,player',
 							'uiConf:html5Url': "/html5/html5lib/v" + window.MWEMBED_VERSION + '/mwEmbedLoader.php',
 							'uiConf:creationMode': 2,
-							'uiConf:confFile': kdpConfig,
+							'uiConf:confFile': vdpConfig,
 							'uiConf:config': angular.toJson(data)
 						};
 					}
 					apiService.setCache(false); // disable cache before this request to prevent fetching last created player from cache
 					apiService.doRequest(request).then(function (data) {
-						var playerData = $.isArray(data) ? data[1] : data; // when using kmc.vars.default_kdp.id we get an array because of the multi request
+						var playerData = $.isArray(data) ? data[1] : data; // when using vmc.vars.default_vdp.id we get an array because of the multi request
 						playerData["autoUpdate"] = true; // new players always auto-update
 						playersService.setCurrentPlayer(playerData);
 						apiService.setCache(true); // restore cache usage
@@ -344,7 +344,7 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 					'2:action': 'update',
 					'2:id': '{1:result:id}',
 					'2:uiConf:name': 'Copy of ' + srcUi.name,
-					'2:uiConf:objectType': 'KalturaUiConf'
+					'2:uiConf:objectType': 'VidiunUiConf'
 //'2:uiConf:objType': 1,
 // 'uiConf:creationMode': 2
 				};
@@ -437,9 +437,9 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 			'getDefaultConfig': function () {
 				return $http.get('js/services/defaultPlayer.json');
 			},
-			'getKDPConfig': function () {
-				$http.get('js/services/kdp.xml').success(function (data, status, headers, config) {
-					kdpConfig = data;
+			'getVDPConfig': function () {
+				$http.get('js/services/vdp.xml').success(function (data, status, headers, config) {
+					vdpConfig = data;
 				});
 			},
 			"preparePluginsDataForRender": function (data) {
@@ -468,11 +468,11 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				data2Save.plugins = playersService.preparePluginsDataForRender(data2Save.plugins);
 				// remove preview playlist from data before saving
 				if (data2Save.plugins.playlistAPI) {
-					if (data2Save.plugins.playlistAPI.kpl0Id) {
-						delete data2Save.plugins.playlistAPI.kpl0Id;
+					if (data2Save.plugins.playlistAPI.vpl0Id) {
+						delete data2Save.plugins.playlistAPI.vpl0Id;
 					}
-					if (data2Save.plugins.playlistAPI.kpl0Name) {
-						delete data2Save.plugins.playlistAPI.kpl0Name;
+					if (data2Save.plugins.playlistAPI.vpl0Name) {
+						delete data2Save.plugins.playlistAPI.vpl0Name;
 					}
 				}
 				if (data2Save.enviornmentConfig) {
@@ -508,10 +508,10 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				apiService.doRequest(request).then(function (result) {
 					playersCache[data.id] = data; // update player data in players cache
 					currentPlayer = {};
-					// refresh KMC players list so that the new player will appear in the "Preview and Embed" screen
-					var kmc = window.parent.kmc;
-					if (kmc && kmc.preview_embed) {
-						kmc.preview_embed.updateList(data.tags.indexOf("playlist") !== -1);
+					// refresh VMC players list so that the new player will appear in the "Preview and Embed" screen
+					var vmc = window.parent.vmc;
+					if (vmc && vmc.preview_embed) {
+						vmc.preview_embed.updateList(data.tags.indexOf("playlist") !== -1);
 					}
 					deferred.resolve(result);
 				});
@@ -540,8 +540,8 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				var rejectText = $filter('translate')('Update player action was rejected: ');
 
 				var method = 'get';
-				var url = window.kWidget.getPath() + 'services.php';
-				var params = {service: 'upgradePlayer', uiconf_id: playerObj.id, ks: localStorageService.get("ks")};
+				var url = window.vWidget.getPath() + 'services.php';
+				var params = {service: 'upgradePlayer', uiconf_id: playerObj.id, vs: localStorageService.get("vs")};
 				if (window.IE < 10) {
 					params["callback"] = 'JSON_CALLBACK';
 					method = 'jsonp';
@@ -555,7 +555,7 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 					if (data['uiConfId']) {
 						delete data['uiConfId'];
 						delete data['widgetId'];
-						delete data.vars['ks'];
+						delete data.vars['vs'];
 					}
 // set an api request to update the uiconf. update playlist includeInLayout if needed
 					if (isPlaylist && data.plugins.playlistAPI) {
@@ -566,7 +566,7 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 						'service': 'uiConf',
 						'action': 'update',
 						'id': playerObj.id,                        // the id of the player to update
-						'uiConf:tags': 'html5studio,' + playerTag, // update tags to prevent breaking the old studio which looks for the tag kdp3
+						'uiConf:tags': 'html5studio,' + playerTag, // update tags to prevent breaking the old studio which looks for the tag vdp3
 						'uiConf:html5Url': html5lib,               // update the html5 lib to the new version
 						'uiConf:config': angular.toJson(data).replace("\"vars\":", "\"uiVars\":")  // update the config object and change vars to uiVars
 					};
@@ -587,7 +587,7 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 	}])
 ;
 
-KMCServices.factory('requestNotificationChannel', ['$rootScope', function ($rootScope) {
+VMCServices.factory('requestNotificationChannel', ['$rootScope', function ($rootScope) {
 // private notification messages
 	var _START_REQUEST_ = '_START_REQUEST_';
 	var _END_REQUEST_ = '_END_REQUEST_';
@@ -631,7 +631,7 @@ KMCServices.factory('requestNotificationChannel', ['$rootScope', function ($root
 
 }]);
 
-KMCServices.directive('canSpin', [function () {
+VMCServices.directive('canSpin', [function () {
 	return {
 		require: ['?^loadingWidget', '?^navmenu'],
 		priority: 1000,
@@ -681,7 +681,7 @@ KMCServices.directive('canSpin', [function () {
 		}
 	};
 }]);
-KMCServices.directive('loadingWidget', ['requestNotificationChannel', function (requestNotificationChannel) {
+VMCServices.directive('loadingWidget', ['requestNotificationChannel', function (requestNotificationChannel) {
 	return {
 		restrict: 'EA',
 		scope: {},
@@ -707,7 +707,7 @@ KMCServices.directive('loadingWidget', ['requestNotificationChannel', function (
 ])
 ;
 
-KMCServices.factory('editableProperties', ['$q', 'api', '$http', function ($q, api, $http) {
+VMCServices.factory('editableProperties', ['$q', 'api', '$http', function ($q, api, $http) {
 	var deferred = $q.defer();
 	api.then(function () {
 		//for debbuging
@@ -717,7 +717,7 @@ KMCServices.factory('editableProperties', ['$q', 'api', '$http', function ($q, a
 //
 
 		var method = 'get';
-		var url = window.kWidget.getPath() + 'services.php?service=studioService';
+		var url = window.vWidget.getPath() + 'services.php?service=studioService';
 		if (window.IE < 10) {
 			url += '&callback=JSON_CALLBACK';
 			method = 'jsonp';
@@ -737,7 +737,7 @@ KMCServices.factory('editableProperties', ['$q', 'api', '$http', function ($q, a
 	return deferred.promise;
 }]);
 
-KMCServices.factory('loadINI', ['$http', function ($http) {
+VMCServices.factory('loadINI', ['$http', function ($http) {
 	var iniConfig = null;
 	return {
 		'getINIConfig': function () {
@@ -758,7 +758,7 @@ KMCServices.factory('loadINI', ['$http', function ($http) {
 	};
 }]);
 
-KMCServices.provider('api', function () {
+VMCServices.provider('api', function () {
 	var injector = angular.injector(['ng']);
 	var $q = injector.get('$q');
 
@@ -766,7 +766,7 @@ KMCServices.provider('api', function () {
 	return {
 		$get: function (loadINI) {
 			var deferred = $q.defer();
-//first request - create new kwidget.api
+//first request - create new vwidget.api
 			if (!apiObj) {
 				var require = function (file, callback) {
 					var head = document.getElementsByTagName("head")[0];
@@ -784,14 +784,14 @@ KMCServices.provider('api', function () {
 				};
 				var loadHTML5Lib = function (url) {
 					var initKw = function () {
-						if (typeof kWidget != 'undefined') {
-							kWidget.api.prototype.type = 'POST';
-							apiObj = new kWidget.api();
+						if (typeof vWidget != 'undefined') {
+							vWidget.api.prototype.type = 'POST';
+							apiObj = new vWidget.api();
 							deferred.resolve(apiObj);
 						}
 					};
 					require(url, function () {
-						if (typeof kWidget == 'undefined') {
+						if (typeof vWidget == 'undefined') {
 							setTimeout(function () {
 								initKw();
 							}, 100);
@@ -805,14 +805,14 @@ KMCServices.provider('api', function () {
 
 				var html5lib = null;
 				try {
-					var kmc = window.parent.kmc;
-					if (kmc && kmc.vars && kmc.vars.studio.config) {
-						var config = angular.fromJson(kmc.vars.studio.config);
-						html5lib = kmc.vars.api_url + "/html5/html5lib/" + config.html5_version + "/mwEmbedLoader.php";
+					var vmc = window.parent.vmc;
+					if (vmc && vmc.vars && vmc.vars.studio.config) {
+						var config = angular.fromJson(vmc.vars.studio.config);
+						html5lib = vmc.vars.api_url + "/html5/html5lib/" + config.html5_version + "/mwEmbedLoader.php";
 						loadHTML5Lib(html5lib);
 					}
 				} catch (e) {
-					cl('Could not located parent.kmc: ' + e);
+					cl('Could not located parent.vmc: ' + e);
 				}
 
 				if (!html5lib) {
@@ -828,15 +828,15 @@ KMCServices.provider('api', function () {
 		}
 	};
 });
-KMCServices.factory('apiService', ['api', '$q', '$timeout', '$location', 'localStorageService', 'apiCache', 'requestNotificationChannel', '$filter', function (api, $q, $timeout, $location, localStorageService, apiCache, requestNotificationChannel, $filter) {
+VMCServices.factory('apiService', ['api', '$q', '$timeout', '$location', 'localStorageService', 'apiCache', 'requestNotificationChannel', '$filter', function (api, $q, $timeout, $location, localStorageService, apiCache, requestNotificationChannel, $filter) {
 	var apiService = {
 		apiObj: api,
-		unSetks: function () {
+		unSetvs: function () {
 			delete apiService.apiObj;
 		},
-		setKs: function (ks) {
+		setVs: function (vs) {
 			apiService.apiObj.then(function (api) {
-				api.setKs(ks);
+				api.setVs(vs);
 			});
 		},
 		setWid: function (wid) {
@@ -854,8 +854,8 @@ KMCServices.factory('apiService', ['api', '$q', '$timeout', '$location', 'localS
 		listMedia: function () {
 			var request = {
 				'service': 'baseentry',
-				'filter:mediaTypeIn': '1,2,5,6,201', // copied from KMC search
-				'filter:objectType': 'KalturaMediaEntryFilter',
+				'filter:mediaTypeIn': '1,2,5,6,201', // copied from VMC search
+				'filter:objectType': 'VidiunMediaEntryFilter',
 				'action': 'list'
 
 			};
@@ -866,8 +866,8 @@ KMCServices.factory('apiService', ['api', '$q', '$timeout', '$location', 'localS
 				'service': 'baseentry',
 				'action': 'list',
 				'filter:freeText': term,
-				'filter:mediaTypeIn': '1,2,5,6,201', // copied from KMC search
-				'filter:objectType': 'KalturaMediaEntryFilter',
+				'filter:mediaTypeIn': '1,2,5,6,201', // copied from VMC search
+				'filter:objectType': 'VidiunMediaEntryFilter',
 				ignoreNull: '1'
 			};
 			return apiService.doRequest(request, true);
@@ -875,7 +875,7 @@ KMCServices.factory('apiService', ['api', '$q', '$timeout', '$location', 'localS
 		listPlaylists: function () {
 			var request = {
 				'service': 'baseentry',
-				'filter:objectType': 'KalturaBaseEntryFilter',
+				'filter:objectType': 'VidiunBaseEntryFilter',
 				'filter:typeEqual': '5',
 				'action': 'list'
 
@@ -887,7 +887,7 @@ KMCServices.factory('apiService', ['api', '$q', '$timeout', '$location', 'localS
 				'service': 'baseentry',
 				'action': 'list',
 				'filter:freeText': term,
-				'filter:objectType': 'KalturaBaseEntryFilter',
+				'filter:objectType': 'VidiunBaseEntryFilter',
 				'filter:typeEqual': '5',
 				ignoreNull: '1'
 			};
@@ -910,8 +910,8 @@ KMCServices.factory('apiService', ['api', '$q', '$timeout', '$location', 'localS
 				apiService.apiObj.then(function (api) {
 					api.doRequest(params, function (data) {
 						if (data.code) {
-							if (data.code == "INVALID_KS") {
-								localStorageService.remove('ks');
+							if (data.code == "INVALID_VS") {
+								localStorageService.remove('vs');
 								$location.path("/login");
 							}
 							if (!ignoreSpinner) {
@@ -936,7 +936,7 @@ KMCServices.factory('apiService', ['api', '$q', '$timeout', '$location', 'localS
 	};
 	return apiService;
 }]);
-KMCServices.factory('playerTemplates', ['$http', function ($http) {
+VMCServices.factory('playerTemplates', ['$http', function ($http) {
 	return {
 		'listSystem': function () {
 			return $http.get('http://mrjson.com/data/5263e32d85f7fef869f2a63b/template/list.json');

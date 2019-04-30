@@ -20,7 +20,7 @@
                 "closedCaptions": {},
                 "watermark": {
                     "cssClass": "topLeft",
-                    "img": "http://www.kaltura.com/content/uiconf/kaltura/kmc/appstudio/kdp3/exampleWatermark.png"
+                    "img": "http://www.vidiun.com/content/uiconf/vidiun/vmc/appstudio/vdp3/exampleWatermark.png"
                 },
                 "logo": {},
                 "infoScreen": {},
@@ -35,7 +35,7 @@
                 }
             ],
             "layout":{
-                "skin": "kdark",
+                "skin": "vdark",
                 "cssFiles":[]
             }
         }

@@ -4,7 +4,7 @@
 
 describe('ModalInstanceCtrl', function() {
     var $scope, settings, $modalInstance, mi, testVal;
-    beforeEach(module('KMC.controllers'));
+    beforeEach(module('VMC.controllers'));
     beforeEach(inject(function(_$rootScope_, $controller) {
         $scope = _$rootScope_;
         settings = {};

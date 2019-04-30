@@ -2,7 +2,7 @@
 
 /* Controllers */
 //
-angular.module('KMC.controllers', [])
+angular.module('VMC.controllers', [])
     .controller('ModalInstanceCtrl',
     function ($scope, $modalInstance, settings) {
         $scope.title = '';

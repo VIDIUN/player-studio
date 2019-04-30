@@ -6,9 +6,9 @@ module.exports = function(grunt) {
         meta: {
             banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
                 '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-                '* https://github.com/kaltura/player-studio\n' +
+                '* https://github.com/vidiun/player-studio\n' +
                 '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
-                'Kaltura */\n'
+                'Vidiun */\n'
         },
         jshint: {
             options: {
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
                     "cl": true,
                     "angular": true,
                     "$": true,
-                    "kWidget": true,
+                    "vWidget": true,
                     "window": true,
                     "logTime": true,
                     "console": true,
@@ -199,8 +199,8 @@ module.exports = function(grunt) {
                         dest: '_dist/js/services/defaultPlayer.json'
                     },
 	                {
-                        src: 'app/js/services/kdp.xml',
-                        dest: '_dist/js/services/kdp.xml'
+                        src: 'app/js/services/vdp.xml',
+                        dest: '_dist/js/services/vdp.xml'
                     },
                     {
                         expand: true,
@@ -264,7 +264,7 @@ module.exports = function(grunt) {
             release: ["_dist/app"]
         },
         ngtemplates: {
-            KMCModule: {
+            VMCModule: {
                 cwd: 'app',
 	            src: ['templates/**/*.html', 'view/**/*.html'],
                 dest: '_dist/templates.js',

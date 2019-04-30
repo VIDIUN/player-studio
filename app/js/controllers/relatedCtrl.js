@@ -1,4 +1,4 @@
-KMCMenu.controller('relatedCtrl', ['$scope',
+VMCMenu.controller('relatedCtrl', ['$scope',
 	function ($scope) {
 		$scope.relatedOption = "relatedToEntry";
 		$scope.entryList = "";
