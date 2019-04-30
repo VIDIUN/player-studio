@@ -25,13 +25,13 @@ DirectivesModule.directive('onFinishRender', ['$timeout','$compile', function ($
 						$('div:contains("Playlist Configuration").panel').before('<div class="tabSubHeader playlistSetup">Playlist setup:</div>'); // add playlist separator
 					}
 					if ($(".Analytics").length === 0){
-						$('div:contains("Youbora").panel').before('<div class="tabSubHeader Analytics">Analytics</div><p class="categoryDesc">Kaltura supports robust analytics via the Kaltura platform as well as via 3rd party analytics providers.</p>'); // add Analytics separator
+						$('div:contains("Youbora").panel').before('<div class="tabSubHeader Analytics">Analytics</div><p class="categoryDesc">Vidiun supports robust analytics via the Vidiun platform as well as via 3rd party analytics providers.</p>'); // add Analytics separator
 					}
 					if ($(".Monetization").length === 0){
 						$('div:contains("IMA").panel').before('<div class="tabSubHeader Monetization">Monetization</div><p class="categoryDesc">Content monetization settings.</p>'); // add Monetization separator
 					}
 					if ($(".pwa").length === 0){
-						$('div:contains("PWA").checkbox').after('<div class="pwa"></div><p class="categoryDesc">Progressive Web App (PWA) capability allows to download content and play it offline, on the browser itself.<br>More information and documentation can be found <a href="https://github.com/kaltura/playkit-js-offline-manager#playkit-js-offline-manager" target="_blank">here</a>.</p>'); // add pwa separator
+						$('div:contains("PWA").checkbox').after('<div class="pwa"></div><p class="categoryDesc">Progressive Web App (PWA) capability allows to download content and play it offline, on the browser itself.<br>More information and documentation can be found <a href="https://github.com/vidiun/pakhshkit-js-offline-manager#pakhshkit-js-offline-manager" target="_blank">here</a>.</p>'); // add pwa separator
 					}
 					if ($(".advancedDisclaimer").length === 0){
 						$('.jsonView').after('<br><br><br><br><p class="categoryDesc advancedDisclaimer">Note: To see your changes propagate to other Studio tabs, click <b>Save Player Settings</b> and refresh the page.</p>'); // add Advanced tab disclaimer

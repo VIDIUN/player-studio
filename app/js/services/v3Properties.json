@@ -36,7 +36,7 @@
           }
         ],
         "model": "playerVersion",
-        "resetKalturaPlayer": true,
+        "resetVidiunPlayer": true,
         "helpnote": "Select a TV Platform Player version - latest or beta. Beta allows you to experiment with new functionalities that will be released in the next version. Latest will always update to the latest version unless you select “Keep Player on Current Version“",
         "initvalue": "latest"
       },
@@ -46,7 +46,7 @@
         "type": "freezeVersion",
         "endline": "true",
         "filter": "not",
-        "resetKalturaPlayer": true,
+        "resetVidiunPlayer": true,
         "model": "autoUpdate",
         "player-refresh": false
       },
@@ -145,19 +145,19 @@
         "label": "Support legacy HLS with Flash",
         "helpnote": "When using this option, if the platform doesn't support the media source extension or native HLS, we'll try to add Flash",
         "type": "checkbox",
-        "model": "externals.playkit-flash.active",
-        "componentName": "playkit-flash",
-        "kalturaPlayerMinVersion": "0.32.0",
-        "resetKalturaPlayer": true
+        "model": "externals.pakhshkit-flash.active",
+        "componentName": "pakhshkit-flash",
+        "vidiunPlayerMinVersion": "0.32.0",
+        "resetVidiunPlayer": true
       },
       {
         "label": "Support Youtube playback",
         "helpnote": "When using this option, the player will support playing Youtube ingested content from the platform",
         "type": "checkbox",
-        "model": "externals.playkit-youtube.active",
-        "componentName": "playkit-youtube",
-        "kalturaPlayerMinVersion": "0.39.1",
-        "resetKalturaPlayer": true
+        "model": "externals.pakhshkit-youtube.active",
+        "componentName": "pakhshkit-youtube",
+        "vidiunPlayerMinVersion": "0.39.1",
+        "resetVidiunPlayer": true
       }
     ]
   },
@@ -173,7 +173,7 @@
         "description": "A powerful intelligence analytics and optimization platform to deliver online TV-quality video experiences. For full options see <a href='http://developer.nicepeopleatwork.com/apidocs/js/$YB.data.Options.html' target='_blank'>Here</a>.<br>",
         "model": "config.player.plugins.youbora",
         "endline": "true",
-        "componentName": "playkit-youbora",
+        "componentName": "pakhshkit-youbora",
         "children": [
           {
             "label": "Account code",
@@ -187,11 +187,11 @@
       "googleAnalytics": {
         "label": "Google Analytics",
         "type": "featuremenu",
-        "description": "Supports sending player analytics events to Google. For full configuration options see <a href='https://github.com/kaltura/playkit-js-google-analytics/blob/master/docs/configuration.md' target='_blank'>Google Analytics config file</a>.<br>",
+        "description": "Supports sending player analytics events to Google. For full configuration options see <a href='https://github.com/vidiun/pakhshkit-js-google-analytics/blob/master/docs/configuration.md' target='_blank'>Google Analytics config file</a>.<br>",
         "model": "config.player.plugins.googleAnalytics",
         "endline": "true",
-        "componentName": "playkit-google-analytics",
-        "kalturaPlayerMinVersion": "0.25.0",
+        "componentName": "pakhshkit-google-analytics",
+        "vidiunPlayerMinVersion": "0.25.0",
         "children": [
           {
             "label": "Google tracking code",
@@ -207,7 +207,7 @@
         "description": "Integrates comScore Streaming Tag data collection.<br>Please contact your comScore account team for complete instructions for using these parameters, which will be tailored to the needs of the reporting product you aim to collect data for.",
         "model": "config.player.plugins.comscore",
         "endline": "true",
-        "componentName": "playkit-comscore",
+        "componentName": "pakhshkit-comscore",
         "children": [
           {
             "label": "Publisher ID",
@@ -234,7 +234,7 @@
         "type": "featuremenu",
         "description": "The Google IMA SDK for HTML5 V3 allows developers to request and track VAST ads in a HTML5 video environment. For full APIs see: <br><a href='https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis' target='_blank'>Google IMA HTML5 SDK APIs</a>",
         "model": "config.player.plugins.ima",
-        "componentName": "playkit-ima",
+        "componentName": "pakhshkit-ima",
         "children": [
           {
             "label": "Ad tag URL",
@@ -289,9 +289,9 @@
         "label": "PWA",
         "player-refresh": false,
         "type": "checkbox",
-        "model": "externals.playkit-offline-manager.active",
-        "componentName": "playkit-offline-manager",
-        "kalturaPlayerMinVersion": "0.27.0"
+        "model": "externals.pakhshkit-offline-manager.active",
+        "componentName": "pakhshkit-offline-manager",
+        "vidiunPlayerMinVersion": "0.27.0"
       }
     ]
   },
@@ -307,15 +307,15 @@
         "type": "featuremenu",
         "isOpen": true,
         "model": "config.player.plugins.vr",
-        "componentName": "playkit-vr",
-        "kalturaPlayerMinVersion": "0.29.0",
+        "componentName": "pakhshkit-vr",
+        "vidiunPlayerMinVersion": "0.29.0",
         "children": [
           {
             "label": "Toggle Stereo",
             "type": "checkbox",
             "model": "config.player.plugins.vr.toggleStereo",
             "initvalue": true,
-            "resetKalturaPlayer": true,
+            "resetVidiunPlayer": true,
             "helpnote": "Whether to show the stereo toggle button (applicative to mobile devices)"
           },
           {
@@ -381,8 +381,8 @@
         "label": "Sender",
         "type": "featuremenu",
         "model": "config.cast",
-        "componentName": "playkit-cast-sender",
-        "kalturaPlayerMinVersion": "0.33.1",
+        "componentName": "pakhshkit-cast-sender",
+        "vidiunPlayerMinVersion": "0.33.1",
         "children": [
           {
             "label": "Application ID",
@@ -404,8 +404,8 @@
         "label": "Receiver",
         "type": "featuremenu",
         "model": "receiver",
-        "componentName": "playkit-cast-receiver",
-        "kalturaPlayerMinVersion": "0.33.1",
+        "componentName": "pakhshkit-cast-receiver",
+        "vidiunPlayerMinVersion": "0.33.1",
         "description": "Enabling this option means that current player is defined as a receiver type, and should only be used in the receiver application <br><br>* <i>Currently all receiver configuration should be handled through the customer receiver application </i>",
         "children": [
           {}

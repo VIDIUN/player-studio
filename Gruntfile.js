@@ -35,7 +35,7 @@ module.exports = function(grunt) {
                     "document": true,
                     "setTimeout": true,
                     "Spinner": true,
-                    "KalturaPlayer": true
+                    "VidiunPlayer": true
                 }
             },
             dev: ['app/js/**/*.js']

@@ -15,8 +15,8 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 		try {
 		var confVarsObj = JSON.parse($scope.playerData.confVars);
 		if (confVarsObj) {
-			PlayerService.OvpOrOtt = confVarsObj[PlayerService.KALTURA_PLAYER] ? PlayerService.OVP : PlayerService.OTT;
-			var playerName = confVarsObj[PlayerService.KALTURA_PLAYER] ? PlayerService.KALTURA_PLAYER : PlayerService.KALTURA_PLAYER_OTT;
+			PlayerService.OvpOrOtt = confVarsObj[PlayerService.VIDIUN_PLAYER] ? PlayerService.OVP : PlayerService.OTT;
+			var playerName = confVarsObj[PlayerService.VIDIUN_PLAYER] ? PlayerService.VIDIUN_PLAYER : PlayerService.VIDIUN_PLAYER_OTT;
 			var playerVersion = confVarsObj[playerName] === "{beta}" ? 'beta' : 'latest';
 			var autoUpdate = (confVarsObj[playerName] === "{beta}" || confVarsObj[playerName] === "{latest}");
 			$scope.playerData['playerVersion'] = playerVersion;
@@ -44,13 +44,13 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 		localStorageService.set('autoPreview', !$scope.autoPreview);
 	};
 	$scope.setSimulateMobile = function(){
-		window.KalturaPlayer = null;
+		window.VidiunPlayer = null;
 		$("#" + PlayerService.PLAYER_ID).empty();
 		setTimeout(function(){
 			$scope.refreshPlayer();
 		},0);
 	};
-	if (window.parent.kmc && window.parent.kmc.vars.studioV3.showFlashStudio === false){
+	if (window.parent.vmc && window.parent.vmc.vars.studioV3.showFlashStudio === false){
 		$(".menuFooter").css("bottom","1px");
 	}
 	window.parent.studioDataChanged = false; // used when navigating away from studio
@@ -146,7 +146,7 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
                 }else{ // plugin
 	                pluginIndex++;
 	                $scope.propertiesSearch.push({'label': p.label,'categoryIndex':categoryIndex, 'accIndex': pluginIndex, 'id': 'accHeader'+categoryIndex + "_"  +pluginIndex}); // add accordion header to the search indexing
-	                var plugin = {'enabled': p.enabled, 'label': p.label, 'description':p.description, 'isopen': !!p.isOpen, 'model': p.model, 'id': 'accHeader'+categoryIndex + "_" + pluginIndex, 'componentName': p.componentName, 'kalturaPlayerMinVersion': p.kalturaPlayerMinVersion};
+	                var plugin = {'enabled': p.enabled, 'label': p.label, 'description':p.description, 'isopen': !!p.isOpen, 'model': p.model, 'id': 'accHeader'+categoryIndex + "_" + pluginIndex, 'componentName': p.componentName, 'vidiunPlayerMinVersion': p.vidiunPlayerMinVersion};
 	                plugin.properties = [];
 	                // check for tabs
 	                var tabObj = {'type':'tabs', 'children':[]}; // create tab object
@@ -263,7 +263,7 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 		    delete $scope.playerData.config.player.plugins[plugin.model]; // remove the plugin from the player data
 	    }else{
 			if (plugin.componentName) {
-			    window.KalturaPlayer = null;
+			    window.VidiunPlayer = null;
 		    }
 		    $scope.addValidation(plugin);
 	    }
@@ -312,7 +312,7 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 		} else {
 			if (willActive) {
 				$scope.playerData.externals[plugin.componentName] = {
-					kalturaPlayerMinVersion: plugin.kalturaPlayerMinVersion,
+					vidiunPlayerMinVersion: plugin.vidiunPlayerMinVersion,
 					active: true
 				};
 				senderPlugin.enabled = false;
@@ -371,8 +371,8 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
     // handle refresh
 	$scope.lastRefreshID = ''; // used to prevent refresh on blur after refresh on enter
     $scope.propertyChanged = function(property, checkAutoRefresh){
-	    if (property.resetKalturaPlayer){
-		    window.KalturaPlayer = null;
+	    if (property.resetVidiunPlayer){
+		    window.VidiunPlayer = null;
 	    }
 	    if (property.model === "playerVersion" || property.model === "config.player.playback.textLanguage"){ // handle player version and captions select
 		    $scope.updatePlayerData(); // update the player data from the menu data
@@ -383,7 +383,7 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 	    if (property.componentName){ // handle external bundles
 		    $scope.playerData.externals = $scope.playerData.externals || {};
 		    $scope.playerData.externals[property.componentName] = {
-			    kalturaPlayerMinVersion: property.kalturaPlayerMinVersion,
+			    vidiunPlayerMinVersion: property.vidiunPlayerMinVersion,
 			    active: property.initvalue
 		    };
 	    }
@@ -502,8 +502,8 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 					}
 				}
 				if (!found) {
-					playlistMenuArr.push({"model": "config.player.plugins.playlistAPI.kpl" + playlistIndex + "Id", "type": "hiddenValue"});
-					playlistMenuArr.push({"model": "config.player.plugins.playlistAPI.kpl" + playlistIndex + "Name", "type": "hiddenValue"});
+					playlistMenuArr.push({"model": "config.player.plugins.playlistAPI.vpl" + playlistIndex + "Id", "type": "hiddenValue"});
+					playlistMenuArr.push({"model": "config.player.plugins.playlistAPI.vpl" + playlistIndex + "Name", "type": "hiddenValue"});
 				}
 				playlistIndex++;
 			}
@@ -626,7 +626,7 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
         var model = modelArr.length > 1 ? modelArr[modelArr.length - 1] : modelArr[0];
 		$scope.playerData.plugins[model] = {
 			componentName: plugin.componentName,
-			kalturaPlayerMinVersion: plugin.kalturaPlayerMinVersion
+			vidiunPlayerMinVersion: plugin.vidiunPlayerMinVersion
 		};
 	};
 
@@ -755,7 +755,7 @@ VMCMenu.controller('EditCtrl', ['$scope','$http', '$timeout','PlayerData','Playe
 			if ($scope.playerData.config.player.plugins.playlistAPI && $scope.playerData.config.player.plugins.playlistAPI.plugin){
 				$scope.addTags(['html5studio','playlist']); // set playlist tag
 			}else{
-				$scope.setTags(['kalturaPlayerJs','player', PlayerService.OvpOrOtt]); // set player tag
+				$scope.setTags(['vidiunPlayerJs','player', PlayerService.OvpOrOtt]); // set player tag
 			}
 			savePlayer();
 		}

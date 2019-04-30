@@ -5,7 +5,7 @@
 angular.module('VMCModule').controller('PlayerListCtrl',
 	['apiService', 'loadINI', '$location', '$rootScope', '$scope', '$filter', '$modal', '$timeout', '$log', "$compile", "$window", 'localStorageService', 'requestNotificationChannel', 'PlayerService', '$q', 'utilsSvc',
 		function (apiService, loadINI, $location, $rootScope, $scope, $filter, $modal, $timeout, $log, $compile, $window, localStorageService, requestNotificationChannel, PlayerService, $q, utilsSvc) {
-			window.KalturaPlayer = null;
+			window.VidiunPlayer = null;
 			// start request to show the spinner. When data is rendered, the onFinishRender directive will hide the spinner
 			requestNotificationChannel.requestStarted('list');
 			$rootScope.lang = 'en-US';
@@ -48,9 +48,9 @@ angular.module('VMCModule').controller('PlayerListCtrl',
 			var config = null;
 			// try to get studio config from VMC (should work if we are in VMC)
 			try {
-				var kmc = window.parent.kmc;
-				if (kmc && kmc.vars && kmc.vars.studioV3.config) {
-					config = kmc.vars.studioV3.config;
+				var vmc = window.parent.vmc;
+				if (vmc && vmc.vars && vmc.vars.studioV3.config) {
+					config = vmc.vars.studioV3.config;
 					$scope.UIConf = angular.fromJson(config);
 				}
 			} catch (e) {
@@ -82,7 +82,7 @@ angular.module('VMCModule').controller('PlayerListCtrl',
 
 			// get players list from VMC
 			var playersRequest = {
-				'filter:tagsMultiLikeAnd': 'kalturaPlayerJs',
+				'filter:tagsMultiLikeAnd': 'vidiunPlayerJs',
 				'filter:orderBy': '-updatedAt',
 				'filter:objTypeIn': '1,8',
 				'filter:objectType': 'VidiunUiConfFilter',

@@ -250,14 +250,14 @@ VMCModule.config(['$routeProvider', '$locationProvider', '$httpProvider', '$tool
             debug = false;
         }
     });
-	var kmc = window.parent.kmc;
-    if (kmc && kmc.vars.studioV3.showFlashStudio === false && kmc.vars.studioV3.showHTMLStudio === false){
-        $(".kmcSubNav").hide();
+	var vmc = window.parent.vmc;
+    if (vmc && vmc.vars.studioV3.showFlashStudio === false && vmc.vars.studioV3.showHTMLStudio === false){
+        $(".vmcSubNav").hide();
     }
-    if (kmc && kmc.vars.studioV3.showFlashStudio === false){
+    if (vmc && vmc.vars.studioV3.showFlashStudio === false){
         $("#flashStudioBtn").hide();
     }
-    if (kmc && kmc.vars.studioV3.showHTMLStudio === false){
+    if (vmc && vmc.vars.studioV3.showHTMLStudio === false){
         $("#htmlStudioBtn").hide();
     }
 

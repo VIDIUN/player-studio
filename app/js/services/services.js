@@ -184,7 +184,7 @@ VMCServices.factory('sortSvc', [function () {
 	}]
 );
 
-KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiService', '$filter', 'localStorageService', '$location', 'utilsSvc', 'loadINI',
+VMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiService', '$filter', 'localStorageService', '$location', 'utilsSvc', 'loadINI',
 	function ($http, $modal, $log, $q, apiService, $filter, localStorageService, $location, utilsSvc, loadINI) {
 		var playersCache = {};
 		var currentPlayer = {};
@@ -219,10 +219,10 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 			return currentRefresh.promise;
 		};
 		var playersService = {
-			kalturaPlayer: null,
-			PLAYER_ID: 'kVideoTarget',
-			KALTURA_PLAYER: 'kaltura-ovp-player',
-			KALTURA_PLAYER_OTT: 'kaltura-tv-player',
+			vidiunPlayer: null,
+			PLAYER_ID: 'vVideoTarget',
+			VIDIUN_PLAYER: 'vidiun-ovp-player',
+			VIDIUN_PLAYER_OTT: 'vidiun-tv-player',
 			OVP: 'ovp',
 			OTT: 'ott',
 			playerVersionsMap: null,
@@ -260,7 +260,7 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 			'validatePluginsSupport': function (playerData) {
 				for (var plugin in playerData.plugins) {
 					var pluginData = playerData.plugins[plugin];
-					if (!playersService.isValidPlayerVersion(playerData, pluginData.kalturaPlayerMinVersion)) {
+					if (!playersService.isValidPlayerVersion(playerData, pluginData.vidiunPlayerMinVersion)) {
 						if (playerData.externals) {
 							delete playerData.externals[pluginData.componentName];
 						}
@@ -288,8 +288,8 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				var partner_id = playerData.partnerId;
 				var forceTouchUI = playerData.forceTouchUI;
 				var loadPlayer = function () {
-					if (playersService.kalturaPlayer) {
-						playersService.kalturaPlayer.destroy();
+					if (playersService.vidiunPlayer) {
+						playersService.vidiunPlayer.destroy();
 						$("#" + playersService.PLAYER_ID).empty();
 					}
 					loadMedia();
@@ -298,25 +298,25 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 					var providerConfig = {
 						partnerId: partner_id
 					};
-					if (window.parent.kmc && window.parent.kmc.vars && window.parent.kmc.vars.ks) {
-						providerConfig['ks'] = window.parent.kmc.vars.ks;
+					if (window.parent.vmc && window.parent.vmc.vars && window.parent.vmc.vars.vs) {
+						providerConfig['vs'] = window.parent.vmc.vars.vs;
 					}
 					try {
 						var config = JSON.parse(playerConfig.jsonConfig);
 						playersService.removeUnsupportedPlugins(playerData, config.player.plugins);
 						config.targetId = playersService.PLAYER_ID;
 						Object.assign(config.provider, providerConfig);
-						if (window.__kalturaplayerdata) {
-							config.provider.env = $.extend(true, {}, window.__kalturaplayerdata.UIConf[playerData.id].provider.env, config.provider.env);
+						if (window.__vidiunplayerdata) {
+							config.provider.env = $.extend(true, {}, window.__vidiunplayerdata.UIConf[playerData.id].provider.env, config.provider.env);
 						}
 						if (forceTouchUI) {
 							Object.assign(config, {ui: {forceTouchUI: true}});
 						}
-						playersService.kalturaPlayer = KalturaPlayer.setup(config);
+						playersService.vidiunPlayer = VidiunPlayer.setup(config);
 						if (isPlaylist) {
-							playersService.kalturaPlayer.loadPlaylist({playlistId: entry_id});
+							playersService.vidiunPlayer.loadPlaylist({playlistId: entry_id});
 						} else {
-							playersService.kalturaPlayer.loadMedia({entryId: entry_id});
+							playersService.vidiunPlayer.loadMedia({entryId: entry_id});
 						}
 						callback();
 					} catch (error) {
@@ -328,16 +328,16 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				// clear companion divs
 				$("#Comp_300x250").empty();
 				$("#Comp_728x90").empty();
-				playersService.loadKalturaPlayerScript(playerData, function () {
-					if (window.KalturaPlayer) {
+				playersService.loadVidiunPlayerScript(playerData, function () {
+					if (window.VidiunPlayer) {
 						loadPlayer();
 					} else {
 						callback();
 					}
 				});
 			},
-			'loadKalturaPlayerScript': function (playerData, callback) {
-				if (window.KalturaPlayer) {
+			'loadVidiunPlayerScript': function (playerData, callback) {
+				if (window.VidiunPlayer) {
 					callback();
 					return;
 				}
@@ -385,17 +385,17 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 					require('//' + env + '/p/' + partner_id + '/embedPlaykitJs/uiconf_id/' + uiconf_id + '/versions/' + playerVersionParam + getPluginsVersion(), callback);
 				};
 
-				if (window.parent.kmc && window.parent.kmc.vars && window.parent.kmc.vars.host) {
-					loadScript(window.parent.kmc.vars.host);
+				if (window.parent.vmc && window.parent.vmc.vars && window.parent.vmc.vars.host) {
+					loadScript(window.parent.vmc.vars.host);
 				} else {
 					loadINI.getINIConfig().success(function (data) {
 						loadScript(data.service_url);
 					});
 				}
 			},
-			'setKDPAttribute': function (attrStr, value) {
-				var kdp = document.getElementById('kVideoTarget');
-				if ($.isFunction(kdp.setKDPAttribute) && typeof attrStr != "undefined" && attrStr.indexOf(".") != -1) {
+			'setVDPAttribute': function (attrStr, value) {
+				var vdp = document.getElementById('vVideoTarget');
+				if ($.isFunction(vdp.setVDPAttribute) && typeof attrStr != "undefined" && attrStr.indexOf(".") != -1) {
 					var obj = attrStr.split(".")[0];
 					var property = attrStr.split(".")[1];
 					vdp.setVDPAttribute(obj, property, value);
@@ -408,7 +408,7 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 					var request = {
 						'service': 'uiConf',
 						'action': 'add',
-						'uiConf:objectType': 'KalturaUiConf',
+						'uiConf:objectType': 'VidiunUiConf',
 						'uiConf:objType': 1,
 						'uiConf:description': '',
 						'uiConf:height': '395',
@@ -416,7 +416,7 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 						'uiConf:swfUrl': '/',
 						'uiConf:version': '161',
 						'uiConf:name': 'New Player',
-						'uiConf:tags': 'kalturaPlayerJs,player,' + playersService.getPartnerType(),
+						'uiConf:tags': 'vidiunPlayerJs,player,' + playersService.getPartnerType(),
 						'uiConf:confVars': '{"' + playersService.getPlayerBundle() + '":"{latest}"}',
 						'uiConf:creationMode': 2,
 						'uiConf:config': angular.toJson(data, true)
@@ -575,11 +575,11 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
                 }
 				// remove preview playlist from data before saving
 				if (data2Save.player.plugins.playlistAPI) {
-					if (data2Save.player.plugins.playlistAPI.kpl0Id) {
-						delete data2Save.player.plugins.playlistAPI.kpl0Id;
+					if (data2Save.player.plugins.playlistAPI.vpl0Id) {
+						delete data2Save.player.plugins.playlistAPI.vpl0Id;
 					}
-					if (data2Save.player.plugins.playlistAPI.kpl0Name) {
-						delete data2Save.player.plugins.playlistAPI.kpl0Name;
+					if (data2Save.player.plugins.playlistAPI.vpl0Name) {
+						delete data2Save.player.plugins.playlistAPI.vpl0Name;
 					}
 				}
 				if (data2Save.enviornmentConfig) {
@@ -620,8 +620,8 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				return deferred.promise;
 			},
 			'getEnvType': function () {
-				if (window.parent.kmc && window.parent.kmc.vars && window.parent.kmc.vars.studioV3) {
-					return window.parent.kmc.vars.studioV3.publisherEnvType;
+				if (window.parent.vmc && window.parent.vmc.vars && window.parent.vmc.vars.studioV3) {
+					return window.parent.vmc.vars.studioV3.publisherEnvType;
 				} else {
 					// for local development
 					return 2;
@@ -630,11 +630,11 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 			'getPlayerBundle': function () {
 				switch (playersService.getEnvType()) {
 					case 0: //OVP
-						return playersService.KALTURA_PLAYER;
+						return playersService.VIDIUN_PLAYER;
 					case 1: //OTT
-						return playersService.KALTURA_PLAYER_OTT;
+						return playersService.VIDIUN_PLAYER_OTT;
 					case 2: //Hybrid
-						return (playersService.OvpOrOtt === playersService.OTT) ? playersService.KALTURA_PLAYER_OTT : playersService.KALTURA_PLAYER;
+						return (playersService.OvpOrOtt === playersService.OTT) ? playersService.VIDIUN_PLAYER_OTT : playersService.VIDIUN_PLAYER;
 				}
 			},
 			'getPartnerType': function () {
@@ -649,10 +649,10 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 			},
 			'getPlayerVersionsMap': function () {
 				if (!playersService.playerVersionsMap) {
-					var kmc = window.parent.kmc;
-					if (kmc && kmc.vars && kmc.vars.studioV3 && kmc.vars.studioV3.playerVersionsMap) {
+					var vmc = window.parent.vmc;
+					if (vmc && vmc.vars && vmc.vars.studioV3 && vmc.vars.studioV3.playerVersionsMap) {
 						try {
-							playersService.playerVersionsMap = JSON.parse(kmc.vars.studioV3.playerVersionsMap);
+							playersService.playerVersionsMap = JSON.parse(vmc.vars.studioV3.playerVersionsMap);
 						} catch (e) {}
 					}
 					playersService.playerVersionsMap = angular.isObject(playersService.playerVersionsMap) ? playersService.playerVersionsMap : {};
@@ -693,7 +693,7 @@ KMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 					}
 				}
 				for (var external in data.externals) {
-					if (data.externals[external].active && playersService.isValidPlayerVersion(data, data.externals[external].kalturaPlayerMinVersion)) {
+					if (data.externals[external].active && playersService.isValidPlayerVersion(data, data.externals[external].vidiunPlayerMinVersion)) {
 						playerAndPluginsVersionObj[external] = playersService.getComponentVersion(data, external);
 					}
 				}
@@ -905,10 +905,10 @@ VMCServices.provider('api', function () {
 
 				var html5lib = null;
 				try {
-					var kmc = window.parent.kmc;
-					if (kmc && kmc.vars && kmc.vars.studioV3) {
-						var config = angular.fromJson(kmc.vars.studioV3);
-						html5lib = kmc.vars.api_url + "/html5/html5lib/" + config.html5_version + "/mwEmbedLoader.php";
+					var vmc = window.parent.vmc;
+					if (vmc && vmc.vars && vmc.vars.studioV3) {
+						var config = angular.fromJson(vmc.vars.studioV3);
+						html5lib = vmc.vars.api_url + "/html5/html5lib/" + config.html5_version + "/mwEmbedLoader.php";
 						loadHTML5Lib(html5lib);
 					}
 				} catch (e) {
