@@ -382,7 +382,7 @@ VMCServices.factory('PlayerService', ['$http', '$modal', '$log', '$q', 'apiServi
 				};
 
 				var loadScript = function (env) {
-					require('//' + env + '/p/' + partner_id + '/embedPlaykitJs/uiconf_id/' + uiconf_id + '/versions/' + playerVersionParam + getPluginsVersion(), callback);
+					require('//' + env + '/p/' + partner_id + '/embedPakhshkitJs/uiconf_id/' + uiconf_id + '/versions/' + playerVersionParam + getPluginsVersion(), callback);
 				};
 
 				if (window.parent.vmc && window.parent.vmc.vars && window.parent.vmc.vars.host) {
